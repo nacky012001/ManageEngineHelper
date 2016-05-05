@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ManageEngine ServiceDesk Helper</title>
+</head>
+
+<body>
+  <div class="container">
+    <h3>ManageEngine ServiceDesk Plus Helper</h3>
+
+    <form id="do_action_form" action="/do_action" method="post">
+      <p>Ticket ids (split by ,): </p>
+      <input type="text" id="ticket_ids" name="ticket_ids" value="<%= @raw_ticket_ids %>"/>
+      <p>Resolution: </p>
+      ​<textarea name="resolution" rows="10" cols="70" form="do_action_form"><%= @resolution %></textarea>
+      <br></br>
+    
+      <div class="row">
+        <button name="action" type="submit" value="view_ticket" />View ticket</button>
+        <button name="action" type="submit" value="pick_up_with_first_response" />Pick up with first response</button>
+        <button name="action" type="submit" value="resolve_and_provide_resolution" />Resolve and provide resolution</button>
+      </div>
+    </form>
+  </div>
+
+  <% if @result %>
+    <div class="container">
+      <p><%= @result %></p>
+    </div>
+  <% end %>
+  
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+v2.0
+1. Refined message display
+2. Able to process multiple tickets now
+
+Comming soon:
+1. Logger
+2. Bug fix: Can't resolve ticket the second times
+3. Create ticket for each env
+4. Maybe...make a desktop version
+
+v2.1
+1. Bug fix: Can't resolve ticket the second times
+
+Comming soon:
+1. Logger
+2. Create ticket for each env
+3. (4.) -> Integrate with outlook
