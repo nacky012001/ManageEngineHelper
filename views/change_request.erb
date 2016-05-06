@@ -1,0 +1,131 @@
+<form id="do_action_form" action="/cr/do_action" method="post">
+  <div>
+    <p>Subject: </p>
+    <input type="text" size="100" id="subject" name="subject" value="<%= params[:subject] %>"/>
+  </div>
+  
+  <div>
+    <p>Requester: </p>
+    <input type="text" size="100" id="requester" name="requester" value="<%= params[:requester] %>"/>
+  </div>
+
+  <div>
+    <p>Estimate duration (mins): </p>
+    <input type="text" size="100" id="duration" name="duration" value="<%= params[:duration] %>"/>
+  </div>
+  
+  <div>
+    <p>Approved by: </p>
+    <input type="text" size="100" id="approved_by" name="approved_by" value="<%= params[:approved_by] %>"/>
+  </div>
+
+  <div style="float: left; padding-right: 12px;">
+    <p>Change area: </p>
+    <select id="change_area" name="change_area">
+      <option disabled>Please select an option</option>
+      <option value="Software" selected> Software </option>
+      <option value="Database"> Database </option>
+      <option value="Game Assets"> Game Assets </option>
+      <option value="Infrastructure"> Infrastructure </option>
+      <option value="Macau Office"> Macau Office </option>
+      <option value="Administration"> Administration </option>
+    </select>
+  </div>
+
+  <div style="float: left; padding-right: 12px;">
+    <p>Front-end only: </p>
+    <select id="frontend" name="frontend">
+      <option disabled>Please select an option</option>
+      <option value="No" selected>No</option>
+      <option value="Yes">Yes</option>
+    </select>
+  </div>
+
+  <div style="float: left; padding-right: 12px;">
+    <p>Downtime: </p>
+    <select id="downtime" name="downtime">
+      <option disabled>Please select an option</option>
+      <option value="No" selected>No</option>
+      <option value="Yes">Yes</option>
+    </select>
+  </div>
+
+  <div style="padding-right: 10px;">
+    <p>Can be rollback: </p>
+    <select id="rollback" name="rollback">
+      <option disabled>Please select an option</option>
+      <option value="No" selected>No</option>
+      <option value="Yes">Yes</option>
+    </select>
+  </div>
+  
+  <div>
+    <p>Testing: </p>
+    ​<textarea name="testing" rows="2" cols="70" form="do_action_form"><%= params[:testing] || "Availability test." %></textarea>
+  </div>
+
+  <div style="padding-bottom: 15px;">
+    <p>Impacted (E.g. Report system not available; Stop App/Core service): </p>
+    ​<textarea name="impacted" rows="2" cols="70" form="do_action_form"><%= params[:impacted] || "No impact." %></textarea>
+  </div>
+
+  <hr></hr>
+
+  <% @envs.each do |env| %>
+    <% env_properties = "#{env.downcase}_properties"%>
+    <% env_snd_date = "#{env.downcase}_sandbox_date" %>
+    <% env_prd_date = "#{env.downcase}_production_date" %>
+    <div style="float: left; padding-right: 20px;">
+      <p><%=env%></p>
+      <div>
+        <p>Properties: </p>
+        <input type="text" size="80" id="<%=env_properties%>" name="<%=env_properties%>" value="<%= params[env_properties] || "All properties"%>"/>      
+      </div>
+      <div style="float: left; padding-right: 90px;">
+        <p>Sandbox date: </p>
+        <input type="text" size="23" id="<%=env_snd_date%>" name="<%=env_snd_date%>" value='<%=params[env_snd_date]%>'/>
+        <button onclick="$('#<%=env_snd_date%>').val(''); return false;"/>Clear</button>
+      </div>
+      <div style="float: left; padding-right: 90px;">
+        <p>Production date: </p>
+        <input type="text" size="23" id="<%=env_prd_date%>" name="<%=env_prd_date%>" value='<%=params[env_prd_date]%>'/>
+        <button onclick="$('#<%=env_prd_date%>').val(''); return false;"/>Clear</button>
+      </div>
+    </div>
+  <%end%>
+
+  <div class="row" style="padding-top: 20px; clear: both;">
+    <button name="action" type="submit" value="create_change" />Create Change</button>
+    <button name="action" type="reset" value="Reset"/>Redo</button>
+  </div>
+</form> 
+
+<script>
+  $('input[name$="date"]').appendDtpicker({
+    "autodateOnStart": false,
+    "allowWdays": [1, 2, 3, 4, 5],
+    "closeOnSelected": true
+  });
+
+  <% if params[:rollback] %>
+    $('#rollback').val("<%=params[:rollback]%>"); 
+  <% end %>
+
+  <% if params[:frontend] %>
+    $('#frontend').val("<%=params[:frontend]%>");
+  <% end %>
+
+  <% if params[:downtime] %>
+    $('#downtime').val("<%=params[:downtime]%>");
+  <% end %>
+
+  <% if params[:change_area] %>
+    $('#change_area').val("<%=params[:change_area]%>");
+  <% end %>  
+</script>
+
+<% if @result %>
+  <div class="container">
+    <p><%= @result %></p>
+  </div>
+<% end %>

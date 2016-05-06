@@ -1,82 +1,13 @@
 module ManageEngineHelper
   class OperationRequester
-    attr_reader :ticket_id
-
+protected
     @@operations = {'GET_REQUEST' => [:post, 'request'],
                     'PICKUP_REQUEST' => [:post, 'request'],
                     'ADD_NOTE' => [:post, 'request', 'notes'],
                     'ADD_RESOLUTION' => [:post, 'request', 'resolution'],
-                    'EDIT_REQUEST' => [:post, 'request']}
+                    'EDIT_REQUEST' => [:post, 'request'],
+                    'ADD_REQUEST' => [:post, 'request']}
 
-    def initialize(ticket_id)
-      @ticket_id = ticket_id
-    end
-
-    def view_ticket(opts)
-      get_request
-    end
-
-    def pick_up_with_first_response(opts)
-      res = pick_up_request
-
-      return res if is_failed?(res)
-
-      # first response
-      input_data = 
-      "<Operation>
-        <Details>
-          <Notes>
-            <Note>
-              <parameter>
-                <name>markFirstResponse</name>
-                <value>true</value>
-              </parameter>
-              <parameter>
-                <name>notesText</name>
-                <value>Noted.</value>
-              </parameter>
-            </Note>
-          </Notes>
-         </Details>
-       </Operation>"
-
-      res = add_note(input_data)
-
-      return res if is_failed?(res)
-
-      get_request
-    end
-
-    def resolve_and_provide_resolution(opts)
-     # add resolve message
-     input_data = 
-      "<Details>
-        <resolution>
-          <resolutiontext>#{opts[:resolution]}</resolutiontext>
-        </resolution>
-      </Details>"
-			
-     res = add_resolution(input_data)
-                                  
-     return res if is_failed?(res)
-      
-     # resolve ticket
-     input_data = 
-      "<Details>
-        <parameter>
-           <name>status</name>
-           <value>Resolved</value>
-        </parameter>
-      </Details>"
-      
-      res = edit_request(input_data)
-
-      return res if is_failed?(res)
-
-      get_request
-    end
-
-private
     def get_request
       operation = 'GET_REQUEST'
       method = @@operations['GET_REQUEST'][0]
@@ -128,6 +59,17 @@ private
       api = @@operations['EDIT_REQUEST'][1]
 
       res = HTTParty.send(:post, File.join($manage_engine_path, api, @ticket_id), :verify => false, 
+                          :body=>{'OPERATION_NAME' => operation, 'TECHNICIAN_KEY' => $api_key,
+                                  'INPUT_DATA' => input_data}).parsed_response
+      res
+    end
+
+    def add_request(input_data)
+      operation = 'ADD_REQUEST'
+      method = @@operations['ADD_REQUEST'][0]
+      api = @@operations['ADD_REQUEST'][1]
+
+      res = HTTParty.send(:post, File.join($manage_engine_path, api), :verify => false, 
                           :body=>{'OPERATION_NAME' => operation, 'TECHNICIAN_KEY' => $api_key,
                                   'INPUT_DATA' => input_data}).parsed_response
       res
