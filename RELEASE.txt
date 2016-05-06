@@ -15,3 +15,11 @@ Comming soon:
 1. Logger
 2. Create ticket for each env
 3. (4.) -> Integrate with outlook
+
+v3.0
+1. Restructure folders -> move api_key, path to config/config.rb
+2. Added new feature: Can create change request for each idc and env now.
+
+Comming soon:
+1. Logger
+2. Integrate resolve stuck fund with outlook
