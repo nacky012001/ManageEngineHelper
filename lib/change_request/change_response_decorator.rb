@@ -68,7 +68,6 @@ private
       description = details.select { |parameter| parameter['name'] == 'description' }.first['value']
       
       message += "Change: ##{request_id}</br>"
-      message += "Request: #{method}</br>"
       message += "Subject: #{subject}</br>"
       message += "Requester: #{requester}</br>"
       message += "Data center: #{data_center}</br>"

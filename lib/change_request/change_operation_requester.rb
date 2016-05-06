@@ -1,7 +1,7 @@
 module ManageEngineHelper
   class ChangeOperationRequester < OperationRequester
     @@generic_information_columns = 
-      [:request_template, :requester, :change_area, :downtime, :approved_by, :subject, :frontend, :duration, :description]
+      [:request_template, :requester, :change_area, :downtime, :approved_by, :frontend, :duration, :description]
 
     def create_change(opts)
       @params = opts
@@ -54,6 +54,7 @@ private
       # compose request
       requests.collect do |idc, env|
         { 
+          subject: subject(idc, env),
           data_center: "#{idc.upcase}IDC",
           environment: env.capitalize,
           property_id: properties(idc),
@@ -82,8 +83,8 @@ private
       @params[:approved_by]
     end
 
-    def subject
-      @params[:subject]
+    def subject(idc, env)
+      "#{@params[:subject]} (#{idc.upcase}IDC #{env.capitalize})"
     end
 
     def frontend
@@ -95,19 +96,25 @@ private
     end
 
     def description
-      "Instruction\n" +
-      "1. Fill in all required (*) fields above.\n" +
-      "2. Fill in the following information.\n" +
-      "3. Save the request.\n" +
-      "4. Attach the TR details 4 days before deployment.\n\n" +
-      "Change Description\n" +
-      @params[:subject] + "\n\n" +
-      "Rollback Plan\n" +
-      @params[:rollback] + "\n\n" +
-      "Impacted (E.g. Report system not available; Stop App/Core service)\n" +
-      @params[:impacted] + "\n\n" + 
-      "Testing\n" +
-      @params[:testing]
+      CGI.escapeHTML(
+        "</p><strong>Instruction</strong></br>
+         1. Fill in all required (*) fields above.</br>
+         2. Fill in the following information.</br>
+         3. Save the request.</br>
+         4. Attach the TR details 4 days before deployment.
+         <hr>
+         <strong>Change Description</strong></br>
+         #{@params[:subject]}</br>
+         <hr>
+         <strong>Rollback Plan</strong></br>
+         #{@params[:rollback]}</br>
+         <hr>
+         <strong>Impacted</strong> (E.g. Report system not available; Stop App/Core service)
+         #{@params[:impacted]}</br>
+         <hr>
+         <strong>Testing</strong>
+         #{@params[:testing]}</br>
+         <hr>")
     end
 
     def properties(idc)
