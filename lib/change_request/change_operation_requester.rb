@@ -63,8 +63,7 @@ private
     end
 
     def request_template
-      #"Change Request (CR)"
-      "CR"
+      "Change Request (CR)"
     end
 
     def requester
