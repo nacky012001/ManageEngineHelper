@@ -5,8 +5,8 @@ module ManageEngineHelper
       results = []
       
       @result = "</br>============================================</br>"
-      @result += call_operation(params)
-
+      @result += call_operation(params) if (check_params(params))
+      
       nil
     end
 
@@ -17,6 +17,16 @@ module ManageEngineHelper
 private
     def parse_params(params)
       @operation = params[:action]
+    end
+
+    def check_params(params)
+      require_params = [:subject, :requester, :duration, :approved_by]
+      missing_params = 
+        require_params.select { |p| params[p].nil? || params[p].empty? }
+
+      @result += "Missing " + missing_params.map { |p| p.capitalize }.join(', ')
+
+      missing_params.empty?
     end
 
     def call_operation(params)
