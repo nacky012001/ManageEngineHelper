@@ -59,6 +59,11 @@
     </select>
   </div>
   
+	<div>
+    <p>Change Description: </p>
+		​<textarea name="change_description" rows="2" cols="70" form="do_action_form"><%= params[:change_description] %></textarea>
+  </div>
+	
   <div>
     <p>Testing: </p>
     ​<textarea name="testing" rows="2" cols="70" form="do_action_form"><%= params[:testing] || "Availability test." %></textarea>

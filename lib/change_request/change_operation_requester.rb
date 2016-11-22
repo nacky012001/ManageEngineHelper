@@ -105,7 +105,7 @@ private
          4. Attach the TR details 4 days before deployment.
          <hr>
          <strong>Change Description</strong></br>
-         #{@params[:subject]}</br>
+         #{@params[:change_description]}</br>
          <hr>
          <strong>Rollback Plan</strong></br>
          #{@params[:rollback]}</br>
