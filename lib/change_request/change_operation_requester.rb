@@ -55,7 +55,8 @@ private
       requests.collect do |idc, env|
         { 
           subject: subject(idc, env),
-          data_center: "#{idc.upcase}IDC",
+					# idc: mo-landbase => idc: MOIDC-Landbase
+          data_center: idc.split('-').each_with_index.map{ |t, idx| idx == 0 ? "#{t.upcase}IDC" : t.capitalize }.join('-'),
           environment: env.capitalize,
           property_id: properties(idc),
           target_date: target_date(idc, env)

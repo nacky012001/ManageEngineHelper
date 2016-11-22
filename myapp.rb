@@ -29,13 +29,13 @@ end
 
 get '/cr' do
   @body = :change_request
-  @envs = ['PH', 'TW']
+  @envs = ['PH', 'TW', 'MO-Online', 'MO-Landbase']
   erb :index
 end
 
 post '/cr/do_action' do
   @body = :change_request
-  @envs = ['PH', 'TW']
+  @envs = ['PH', 'TW', 'MO-Online', 'MO-Landbase']
 
   handler = ManageEngineHelper::ChangeOperationHandler.new
   handler.handle(params)
