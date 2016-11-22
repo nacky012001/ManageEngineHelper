@@ -20,7 +20,7 @@ private
     end
 
     def check_params(params)
-      require_params = [:subject, :requester, :duration, :approved_by]
+      require_params = [:subject, :requester, :duration, :executed_by]
       missing_params = 
         require_params.select { |p| params[p].nil? || params[p].empty? }
 

@@ -61,7 +61,7 @@ private
       target_date = details.select { |parameter| parameter['name'] == 'target date' }.first['value']
       environment = details.select { |parameter| parameter['name'] == 'environment' }.first['value']
       duration = details.select { |parameter| parameter['name'] == 'estimate duration (mins)' }.first['value']
-      approved_by = details.select { |parameter| parameter['name'] == 'approved by' }.first['value']
+      executed_by = details.select { |parameter| parameter['name'] == 'executed by' }.first['value']
       change_area = details.select { |parameter| parameter['name'] == 'change area' }.first['value']
       frontend = details.select { |parameter| parameter['name'] == 'frontend' }.first['value']
       downtime = details.select { |parameter| parameter['name'] == 'downtime' }.first['value']
@@ -74,7 +74,7 @@ private
       message += "Target date: #{target_date}</br>"
       message += "Environment: #{environment}</br>"
       message += "Estimate duration (mins): #{duration}</br>"
-      message += "Approved by: #{approved_by}</br>"
+      message += "Executed by: #{executed_by}</br>"
       message += "Change area: #{change_area}</br>"
       message += "Front-end: #{frontend}</br>"
       message += "Downtime: #{downtime}</br>"

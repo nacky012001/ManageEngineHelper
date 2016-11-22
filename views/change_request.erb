@@ -15,8 +15,8 @@
   </div>
   
   <div>
-    <p>Approved by: </p>
-    <input type="text" size="100" id="approved_by" name="approved_by" value="<%= params[:approved_by] %>"/>
+    <p>Executed by: </p>
+    <input type="text" size="100" id="executed_by" name="executed_by" value="<%= params[:executed_by] %>"/>
   </div>
 
   <div style="float: left; padding-right: 12px;">
@@ -77,33 +77,31 @@
   <hr></hr>
 
   <% @idcs.each do |idc| %>
-		<% if idc.is_a?(Hash) %>
-			<% idc, envs = idc.keys.first, idc.values.first %>
-		<% end %>
-		
+		<% idc, envs = idc.keys.first, idc.values.first if idc.is_a?(Hash) %>
     <% env_properties = "#{idc.downcase}_properties"%>
     <% env_snd_date = "#{idc.downcase}_sandbox_date" if envs.nil? || envs.include?('sandbox') %>
     <% env_prd_date = "#{idc.downcase}_production_date" if envs.nil? || envs.include?('production') %>
-    <div style="float: left; padding-right: 20px; padding-bottom: 20px;">
+		
+    <div style="float: left; padding-right: 90px; padding-bottom: 20px;">
       <p><%=idc%></p>
       <div>
         <p>Properties: </p>
         <input type="text" size="80" id="<%=env_properties%>" name="<%=env_properties%>" value="<%= params[env_properties] || "All properties"%>"/>      
       </div>
-			<% if envs.nil? || envs.include?('sandbox') %>
-				<div style="float: left; padding-right: 90px;">
+			<div style="float: left; padding-right: 90px;">				
+				<% if envs.nil? || envs.include?('sandbox') %>
 					<p>Sandbox date: </p>
 					<input type="text" size="23" id="<%=env_snd_date%>" name="<%=env_snd_date%>" value='<%=params[env_snd_date]%>'/>
 					<button onclick="$('#<%=env_snd_date%>').val(''); return false;"/>Clear</button>
-				</div>
-			<% end %>
-			<% if envs.nil? || envs.include?('production') %>
-				<div style="float: left; padding-right: 90px;">
+				<% end %>
+			</div>
+			<div style="float: left;">
+				<% if envs.nil? || envs.include?('production') %>
 					<p>Production date: </p>
 					<input type="text" size="23" id="<%=env_prd_date%>" name="<%=env_prd_date%>" value='<%=params[env_prd_date]%>'/>
 					<button onclick="$('#<%=env_prd_date%>').val(''); return false;"/>Clear</button>
-				</div>
-			<% end %>
+				<% end %>
+			</div>
     </div>
   <%end%>
 

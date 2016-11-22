@@ -1,7 +1,7 @@
 module ManageEngineHelper
   class ChangeOperationRequester < OperationRequester
     @@generic_information_columns = 
-      [:request_template, :requester, :change_area, :downtime, :approved_by, :frontend, :duration, :description]
+      [:request_template, :requester, :change_area, :downtime, :executed_by, :frontend, :duration, :description]
 
     def create_change(opts)
       @params = opts
@@ -16,7 +16,7 @@ module ManageEngineHelper
             #{parameter_template('requester', request[:requester])}
             #{parameter_template('change area', request[:change_area])}
             #{parameter_template('downtime', request[:downtime])}
-            #{parameter_template('approved by', request[:approved_by])}
+            #{parameter_template('executed_by', request[:executed_by])}
             #{parameter_template('subject', request[:subject])}
             #{parameter_template('frontend', request[:frontend])}
             #{parameter_template('estimate duration (mins)', request[:duration])}
@@ -80,8 +80,8 @@ private
       @params[:downtime]
     end
 
-    def approved_by
-      @params[:approved_by]
+    def executed_by
+      @params[:executed_by]
     end
 
     def subject(idc, env)
