@@ -29,13 +29,13 @@ end
 
 get '/cr' do
   @body = :change_request
-  @idcs = ['PH', 'TW', {'MO-Online'=>['sandbox']}, 'MO-Landbase']
+  @idcs = ['PH', 'TW', {'MO-Online'=>['production']}, 'MO-Landbase']
   erb :index
 end
 
 post '/cr/do_action' do
   @body = :change_request
-  @idcs = ['PH', 'TW', {'MO-Online'=>['sandbox']}, 'MO-Landbase']
+  @idcs = ['PH', 'TW', {'MO-Online'=>['production']}, 'MO-Landbase']
 
   handler = ManageEngineHelper::ChangeOperationHandler.new
   handler.handle(params)
