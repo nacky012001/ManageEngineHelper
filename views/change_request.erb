@@ -71,26 +71,34 @@
 
   <hr></hr>
 
-  <% @envs.each do |env| %>
-    <% env_properties = "#{env.downcase}_properties"%>
-    <% env_snd_date = "#{env.downcase}_sandbox_date" %>
-    <% env_prd_date = "#{env.downcase}_production_date" %>
+  <% @idcs.each do |idc| %>
+		<% if idc.is_a?(Hash) %>
+			<% idc, envs = idc.keys.first, idc.values.first %>
+		<% end %>
+		
+    <% env_properties = "#{idc.downcase}_properties"%>
+    <% env_snd_date = "#{idc.downcase}_sandbox_date" if envs.nil? || envs.include?('sandbox') %>
+    <% env_prd_date = "#{idc.downcase}_production_date" if envs.nil? || envs.include?('production') %>
     <div style="float: left; padding-right: 20px; padding-bottom: 20px;">
-      <p><%=env%></p>
+      <p><%=idc%></p>
       <div>
         <p>Properties: </p>
         <input type="text" size="80" id="<%=env_properties%>" name="<%=env_properties%>" value="<%= params[env_properties] || "All properties"%>"/>      
       </div>
-      <div style="float: left; padding-right: 90px;">
-        <p>Sandbox date: </p>
-        <input type="text" size="23" id="<%=env_snd_date%>" name="<%=env_snd_date%>" value='<%=params[env_snd_date]%>'/>
-        <button onclick="$('#<%=env_snd_date%>').val(''); return false;"/>Clear</button>
-      </div>
-      <div style="float: left; padding-right: 90px;">
-        <p>Production date: </p>
-        <input type="text" size="23" id="<%=env_prd_date%>" name="<%=env_prd_date%>" value='<%=params[env_prd_date]%>'/>
-        <button onclick="$('#<%=env_prd_date%>').val(''); return false;"/>Clear</button>
-      </div>
+			<% if envs.nil? || envs.include?('sandbox') %>
+				<div style="float: left; padding-right: 90px;">
+					<p>Sandbox date: </p>
+					<input type="text" size="23" id="<%=env_snd_date%>" name="<%=env_snd_date%>" value='<%=params[env_snd_date]%>'/>
+					<button onclick="$('#<%=env_snd_date%>').val(''); return false;"/>Clear</button>
+				</div>
+			<% end %>
+			<% if envs.nil? || envs.include?('production') %>
+				<div style="float: left; padding-right: 90px;">
+					<p>Production date: </p>
+					<input type="text" size="23" id="<%=env_prd_date%>" name="<%=env_prd_date%>" value='<%=params[env_prd_date]%>'/>
+					<button onclick="$('#<%=env_prd_date%>').val(''); return false;"/>Clear</button>
+				</div>
+			<% end %>
     </div>
   <%end%>
 
